@@ -54,7 +54,7 @@ int main(int argc, char *argv[ ])
         } else {
             write(c_socket, greeting, strlen(greeting));
             //pthread_create with do_chat function.
-			  int pthread_create(&thread,NULL,do_chat,NULL);
+			 pthread_create(&thread,NULL,do_chat,(void *)&c_socket);
         }
     }
 }
@@ -69,6 +69,11 @@ void *do_chat(void *arg)
             //write chatData to all clients
             //
             ///////////////////////////////
+			for(i=0;i<c_socket;i++)
+			{
+				write(c_socket, chatData, strlen(chatData));								
+			}
+			
             if(strstr(chatData, escape) != NULL) {
                 popClient(c_socket);
                 break;
@@ -82,10 +87,21 @@ int pushClient(int c_socket) {
     ///////////////////////////////
     //return -1, if list_c is full.
     //return the index of list_c which c_socket is added.
+
 }
 int popClient(int c_socket)
 {
-    close(c_socket);
+	    
+	for (i=0; i<list_c; i++)
+    	{
+        if (c_socket ==list_c[i])
+       			 {
+           	 while(i++<list_c-1)
+           	     list_c[i]=list_c[i+1];
+           	 break;
+        		}
+    	}
+	close(c_socket);
     //REMOVE c_socket from list_c array.
     //
     ///////////////////////////////////
