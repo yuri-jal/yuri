@@ -71,6 +71,7 @@ void *do_chat(void *arg)
             ///////////////////////////////
 			for(i=0;i<c_socket;i++)
 			{
+				sprintf(chatData, "%s",c_socket);
 				write(c_socket, chatData, strlen(chatData));								
 			}
 			
@@ -87,11 +88,11 @@ int pushClient(int c_socket) {
     ///////////////////////////////
     //return -1, if list_c is full.
     //return the index of list_c which c_socket is added.
-
+	
 }
 int popClient(int c_socket)
 {
-	    
+	int i;	    
 	for (i=0; i<list_c; i++)
     	{
         if (c_socket ==list_c[i])
