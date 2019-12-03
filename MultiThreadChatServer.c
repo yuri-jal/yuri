@@ -69,12 +69,8 @@ void *do_chat(void *arg)
             //write chatData to all clients
             //
             ///////////////////////////////
-			for(i=0;i<c_socket;i++)
-			{
-				sprintf(chatData, "%s",c_socket);
-				write(c_socket, chatData, strlen(chatData));								
-			}
-			
+			printf("%s \n",chatData);
+			write(c_socket, chatData, strlen(chatData));
             if(strstr(chatData, escape) != NULL) {
                 popClient(c_socket);
                 break;
@@ -86,23 +82,38 @@ int pushClient(int c_socket) {
     //ADD c_socket to list_c array.
     //
     ///////////////////////////////
+	int i;	    
+	for(i=0; i<MAX_CLIENT; i++){
+		if(list_c[i] == -1 ){
+			list_c[i] = c_socket; 
+			break;
+		}	
+	
+  	  }
+		if(i == MAX_CLIENT){
+    		return -1;
+		}
+		else{
+			return i;
+		}
     //return -1, if list_c is full.
     //return the index of list_c which c_socket is added.
 	
 }
 int popClient(int c_socket)
 {
-	int i;	    
-	for (i=0; i<list_c; i++)
-    	{
-        if (c_socket ==list_c[i])
-       			 {
-           	 while(i++<list_c-1)
-           	     list_c[i]=list_c[i+1];
-           	 break;
-        		}
-    	}
-	close(c_socket);
+	int k;
+	for(k=0;k<10; k++){
+		if(list_c[k] == c_socket){
+		list_c[k] = -1;
+		}
+    close(c_socket);
+   
+    return 0;
+	} 
+   ///////////////////////////////
+    //return -1, if list_c is full.
+    //return the index of list_c which c_socket is added.
     //REMOVE c_socket from list_c array.
     //
     ///////////////////////////////////
